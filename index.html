@@ -201,6 +201,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 .option-btn{ display:flex; align-items:center; gap:12px; text-align:left; width:100%; padding:13px 16px; border-radius:14px; border:2px solid var(--line); background:var(--panel-soft); font-size:.95rem; font-weight:600; color:var(--ink); transition:background .15s ease,border-color .15s ease; }
 .option-btn:hover:not(:disabled){ border-color:var(--brand); background:var(--brand-soft); }
 .option-btn .letter{ flex:none; width:26px; height:26px; border-radius:50%; background:var(--panel); color:var(--ink-soft); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono', monospace; font-weight:700; font-size:.78rem; }
+.option-btn .option-text{ flex:1; }
 .option-btn.correct{ background:var(--c-soft); border-color:var(--c-color); }
 .option-btn.correct .letter{ background:var(--c-color); color:#07331d; }
 .option-btn.wrong{ background:var(--t-soft); border-color:var(--t-color); }
@@ -1118,7 +1119,7 @@ function moModalCauHoi(doi, loai){
   trangThai.cauHoiHienTai.luaChon.forEach((noiDung, idx) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
-    btn.innerHTML = `<span class="letter">${chuCai[idx]}</span><span>${noiDung}</span>`;
+    btn.innerHTML = `<span class="letter">${chuCai[idx]}</span><span class="option-text">${noiDung}</span>`;
     btn.addEventListener('click', () => chonDapAn(idx));
     elOptions.appendChild(btn);
   });
@@ -1127,6 +1128,20 @@ function moModalCauHoi(doi, loai){
   modalQuestion.classList.remove('hidden');
   batDauDemNguoc();
 }
+
+// Cho phép bấm phím số 1-4 để chọn nhanh đáp án A-D khi modal câu hỏi
+// đang mở và đội chơi chưa trả lời (không hiện chú thích số trên nút).
+document.addEventListener('keydown', (e) => {
+  if (modalQuestion.classList.contains('hidden')) return;
+  if (trangThai.daTraLoi) return;
+  const banPhimSoToChiSo = { '1':0, '2':1, '3':2, '4':3 };
+  const chiSo = banPhimSoToChiSo[e.key];
+  if (chiSo === undefined) return;
+  const tatCaNut = elOptions.querySelectorAll('.option-btn');
+  if (chiSo >= tatCaNut.length) return;
+  e.preventDefault();
+  chonDapAn(chiSo);
+});
 
 function batDauDemNguoc(){
   dungDemNguoc();
