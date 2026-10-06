@@ -1,3 +1,6 @@
+
+
+Duong dua python · HTML
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -7,6 +10,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script>
+/* Áp dụng chế độ giao diện đã lưu ngay từ đầu để tránh nháy màu */
+(function(){
+  var t = 'dark';
+  try { var saved = localStorage.getItem('vqbs-theme'); if (saved === 'light' || saved === 'dark') t = saved; } catch(e){}
+  document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
 <style>
 /* ================================================================
    BIẾN THIẾT KẾ (DESIGN TOKENS)
@@ -30,14 +41,60 @@
   --radius-md:14px;
   --shadow: 0 14px 34px rgba(0,0,0,.45);
   --tile-size:64px;
+  /* Các biến phụ — đổi theo chế độ sáng/tối */
+  --glow-1:#241f55;
+  --glow-2:#0e3a3a;
+  --btn-ghost-hover:#2c3260;
+  --eyebrow-ink:#B9C3FF;
+  --count-active-ink:#CBC3FF;
+  --finish-from:#2f2a12;
+  --lucky-from:#3d3110;
+  --lucky-ink:#ffe3a1;
+  --banner-H:#8fd4ff;
+  --banner-T:#ffb0b8;
+  --banner-C:#9cf0c4;
+  --ok-ink:#54e29c;
+  --bad-ink:#ff8891;
+  color-scheme:dark;
+}
+/* ===== CHẾ ĐỘ SÁNG ===== */
+:root[data-theme="light"]{
+  --bg:#EEF0FA;
+  --panel:#FFFFFF;
+  --panel-soft:#F1F3FC;
+  --line:#D3D8EE;
+  --ink:#1B1E3A;
+  --ink-soft:#5B6290;
+  --brand:#6A58F0;
+  --brand-dark:#5240D6;
+  --brand-soft:#E5E1FF;
+  --q-color:#1C8DE0;   --q-soft:#DCEEFF;
+  --c-color:#16A865;   --c-soft:#D8F6E7;
+  --t-color:#E5384B;   --t-soft:#FFE0E4;
+  --v-color:#F0AE12;   --v-soft:#FFF0C8;
+  --shadow: 0 10px 28px rgba(60,66,130,.15);
+  --glow-1:#DAD6FF;
+  --glow-2:#CDEFE6;
+  --btn-ghost-hover:#E3E7F8;
+  --eyebrow-ink:#4A3FC0;
+  --count-active-ink:#4A3FC0;
+  --finish-from:#FFF3C4;
+  --lucky-from:#FFF0C8;
+  --lucky-ink:#8a5a00;
+  --banner-H:#0F5E9E;
+  --banner-T:#B01C2E;
+  --banner-C:#0B7043;
+  --ok-ink:#0E8A52;
+  --bad-ink:#C4283A;
+  color-scheme:light;
 }
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
 body{
   margin:0;
   background:
-    radial-gradient(circle at 10% 8%, #241f55 0%, transparent 42%),
-    radial-gradient(circle at 92% 90%, #0e3a3a 0%, transparent 38%),
+    radial-gradient(circle at 10% 8%, var(--glow-1) 0%, transparent 42%),
+    radial-gradient(circle at 92% 90%, var(--glow-2) 0%, transparent 38%),
     var(--bg);
   color:var(--ink);
   font-family:'Inter', system-ui, sans-serif;
@@ -48,31 +105,38 @@ button{ font-family:inherit; cursor:pointer; }
 button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outline-offset:2px; }
 .hidden{ display:none !important; }
 .mono{ font-family:'JetBrains Mono', monospace; }
-
+ 
 .card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow); }
-
+ 
 .btn{ border:none; border-radius:999px; padding:12px 22px; font-weight:700; font-size:.95rem; transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease; }
 .btn:hover{ transform:translateY(-2px); }
 .btn:active{ transform:translateY(0); }
 .btn-primary{ background:var(--brand); color:#fff; box-shadow:0 8px 22px rgba(124,108,255,.4); }
 .btn-primary:hover{ background:var(--brand-dark); }
 .btn-ghost{ background:var(--panel-soft); color:var(--ink); border:1px solid var(--line); }
-.btn-ghost:hover{ background:#2c3260; }
+.btn-ghost:hover{ background:var(--btn-ghost-hover); }
 .btn:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
-
+ 
+/* --- Nút đổi giao diện sáng/tối --- */
+.theme-toggle{ display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); background:var(--panel-soft); color:var(--ink); border-radius:999px; padding:8px 14px; font-weight:700; font-size:.85rem; white-space:nowrap; transition:background .15s ease, transform .15s ease; }
+.theme-toggle:hover{ background:var(--btn-ghost-hover); transform:translateY(-1px); }
+.theme-toggle .ico{ font-size:1rem; line-height:1; }
+.topbar-actions{ display:flex; align-items:center; gap:10px; }
+.setup-theme-row{ display:flex; justify-content:flex-end; margin-bottom:6px; }
+ 
 /* ============================================================
    MÀN HÌNH THIẾT LẬP
    ============================================================ */
 #screen-setup{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 18px; }
 .setup-card{ width:100%; max-width:640px; padding:38px clamp(20px,5vw,46px); }
-.eyebrow-code{ display:inline-block; font-family:'JetBrains Mono', monospace; font-size:.8rem; color:#B9C3FF; background:var(--brand-soft); padding:5px 12px; border-radius:8px; margin-bottom:14px; }
+.eyebrow-code{ display:inline-block; font-family:'JetBrains Mono', monospace; font-size:.8rem; color:var(--eyebrow-ink); background:var(--brand-soft); padding:5px 12px; border-radius:8px; margin-bottom:14px; }
 .setup-card h1{ font-size:clamp(1.5rem,4vw,2rem); line-height:1.25; }
 .setup-card > p.lead{ color:var(--ink-soft); margin:10px 0 28px; line-height:1.6; }
 .setup-section{ margin-bottom:26px; }
 .setup-section > label.section-title{ display:block; font-weight:700; margin-bottom:12px; }
 .count-choices{ display:flex; gap:10px; flex-wrap:wrap; }
 .btn-count{ background:var(--panel-soft); border:2px solid var(--line); border-radius:var(--radius-md); padding:10px 20px; font-weight:700; color:var(--ink); }
-.btn-count.active{ background:var(--brand-soft); border-color:var(--brand); color:#CBC3FF; }
+.btn-count.active{ background:var(--brand-soft); border-color:var(--brand); color:var(--count-active-ink); }
 #team-inputs{ display:flex; flex-direction:column; gap:10px; }
 .team-input-row{ display:flex; align-items:center; gap:12px; background:var(--panel-soft); border:1px solid var(--line); border-radius:var(--radius-md); padding:8px 12px; }
 .team-dot{ width:22px; height:22px; border-radius:50%; flex:none; box-shadow:inset 0 0 0 3px rgba(255,255,255,.25); }
@@ -81,7 +145,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 .legend-item{ display:flex; align-items:center; gap:8px; font-size:.85rem; color:var(--ink-soft); background:var(--panel-soft); border:1px solid var(--line); border-radius:10px; padding:6px 10px; }
 .legend-swatch{ width:14px; height:14px; border-radius:4px; flex:none; }
 #btn-start{ width:100%; padding:16px; font-size:1.05rem; }
-
+ 
 /* ============================================================
    MÀN HÌNH TRÒ CHƠI
    ============================================================ */
@@ -89,15 +153,15 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 .topbar{ display:flex; align-items:center; justify-content:space-between; flex-wrap:nowrap; gap:14px; margin-bottom:12px; flex:none; }
 .topbar .brandmark{ display:flex; align-items:center; gap:12px; }
 .topbar h1{ font-size:clamp(1.05rem,2vw,1.35rem); }
-
+ 
 .game-layout{ display:grid; grid-template-columns:1fr 290px; gap:16px; flex:1; min-height:0; }
-
+ 
 /* --- Bàn cờ --- */
 .board-wrap{ padding:16px clamp(10px,2vw,20px); overflow:hidden; position:relative; display:flex; flex-direction:column; min-height:0; }
 .start-zone{ display:flex; align-items:center; gap:12px; border:2px dashed var(--line); border-radius:var(--radius-md); padding:6px 14px; margin-bottom:10px; flex-wrap:wrap; flex:none; }
 .start-zone .label{ font-weight:700; color:var(--ink-soft); font-size:.82rem; white-space:nowrap; }
 #start-tokens{ display:flex; gap:6px; flex-wrap:wrap; }
-
+ 
 /* Kích thước ô (--tile-size) được JavaScript tính toán động để bàn cờ luôn
    vừa khít phần không gian còn lại của #board-outer — màn hình chơi (bàn cờ,
    xúc xắc, bảng điều khiển) luôn nằm trọn trong 1 màn hình, không cần cuộn.
@@ -109,12 +173,12 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 .board-row.reverse{ flex-direction:row-reverse; }
 .flow-arrow{ color:var(--ink-soft); opacity:.3; font-size:calc(var(--tile-size) * 0.26); flex:none; }
 .board-row.reverse .flow-arrow{ transform:scaleX(-1); }
-
+ 
 .tile{ position:relative; width:var(--tile-size); height:var(--tile-size); background:var(--panel-soft); border:2px solid var(--line); border-radius:calc(var(--tile-size) * 0.2); display:flex; flex-direction:column; align-items:center; justify-content:center; flex:none; }
 .tile .tile-num{ position:absolute; top:calc(var(--tile-size) * 0.06); left:calc(var(--tile-size) * 0.09); font-family:'JetBrains Mono', monospace; font-size:calc(var(--tile-size) * 0.14); color:var(--ink-soft); font-weight:700; }
 .tile .tile-icon{ font-size:calc(var(--tile-size) * 0.34); font-weight:700; opacity:.9; }
 .tile .tile-tag{ position:absolute; bottom:calc(var(--tile-size) * 0.05); font-family:'JetBrains Mono', monospace; font-size:calc(var(--tile-size) * 0.11); font-weight:700; letter-spacing:.02em; opacity:.85; }
-
+ 
 .tile.loai-H{ background:var(--q-soft); border-color:var(--q-color); }
 .tile.loai-H .tile-icon{ color:var(--q-color); }
 .tile.loai-T{ background:var(--t-soft); border-color:var(--t-color); }
@@ -123,19 +187,19 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 .tile.loai-C .tile-icon{ color:var(--c-color); }
 .tile.loai-V{ background:var(--v-soft); border-color:var(--v-color); }
 .tile.loai-V .tile-icon{ color:var(--v-color); }
-.tile.finish{ background:linear-gradient(155deg,#2f2a12,var(--v-color)); border-color:#F4B93E; }
+.tile.finish{ background:linear-gradient(155deg,var(--finish-from),var(--v-color)); border-color:#F4B93E; }
 .tile.finish .tile-icon{ font-size:calc(var(--tile-size) * 0.4); }
-
+ 
 .tile.has-warp::after{
   content:""; position:absolute; inset:-2px; border-radius:calc(var(--tile-size) * 0.22);
   border:2px dashed #D56BFF; pointer-events:none;
 }
 .warp-badge{ position:absolute; top:calc(var(--tile-size) * -0.16); right:calc(var(--tile-size) * -0.16); background:#D56BFF; color:#201030; font-size:calc(var(--tile-size) * 0.1); font-weight:800; border-radius:8px; padding:2px 5px; font-family:'JetBrains Mono', monospace; box-shadow:0 2px 6px rgba(0,0,0,.4); white-space:nowrap; }
-
+ 
 .turn-down-right::before, .turn-down-left::before{ content:"↓"; position:absolute; bottom:calc(var(--tile-size) * -0.42); font-size:calc(var(--tile-size) * 0.26); color:var(--ink-soft); opacity:.3; }
 .turn-down-right::before{ right:calc(var(--tile-size) * 0.1); }
 .turn-down-left::before{ left:calc(var(--tile-size) * 0.1); }
-
+ 
 /* pawn overlay layer: absolutely-positioned tokens animated across the board */
 #pawn-layer{ position:absolute; inset:0; pointer-events:none; }
 .pawn{
@@ -148,7 +212,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 }
 .pawn.hop-up{ transition: left .28s cubic-bezier(.4,0,.2,1), top .28s cubic-bezier(.4,0,.2,1), transform .14s ease-out; }
 .pawn.hop-bounce{ transform:translate(-50%,-70%) scale(1.15); }
-
+ 
 /* --- Sidebar --- */
 .sidebar{ display:flex; flex-direction:column; gap:12px; min-height:0; overflow-y:auto; }
 .turn-panel{ padding:16px 18px; flex:none; }
@@ -156,7 +220,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 #turn-team-name{ font-size:1.2rem; font-weight:800; margin-bottom:12px; }
 #btn-ask{ width:100%; padding:13px; font-size:.95rem; }
 #last-roll{ font-size:.8rem; color:var(--ink-soft); margin-top:8px; text-align:center; }
-
+ 
 .scoreboard{ padding:16px 18px; flex:1; min-height:0; overflow-y:auto; }
 .scoreboard h2{ font-size:.96rem; margin-bottom:12px; }
 #score-list{ display:flex; flex-direction:column; gap:8px; }
@@ -165,7 +229,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 .score-card .team-dot{ width:14px; height:14px; }
 .score-card .score-name{ font-weight:700; flex:1; font-size:.86rem; }
 .score-card .score-pos{ font-family:'JetBrains Mono', monospace; font-size:.76rem; color:var(--ink-soft); font-weight:600; }
-
+ 
 /* ============================================================
    OVERLAY XÚC XẮC (DICE OVERLAY)
    ============================================================ */
@@ -176,7 +240,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 @keyframes dice-spin{ from{ transform:rotate3d(1,1,0,0deg) scale(1); } to{ transform:rotate3d(1,1,0,360deg) scale(1); } }
 @keyframes dice-pulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.08); } }
 #dice-result-label{ text-align:center; margin-top:16px; color:#fff; font-weight:700; font-size:1.05rem; }
-
+ 
 /* ============================================================
    MODAL (CÂU HỎI / THẺ VẬN MAY / CHIẾN THẮNG)
    ============================================================ */
@@ -185,17 +249,17 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 .modal-head{ display:flex; align-items:center; gap:10px; margin-bottom:14px; }
 .modal-head .team-dot{ width:17px; height:17px; }
 .modal-head span.name{ font-weight:800; font-size:1.02rem; }
-
+ 
 .tile-banner{ padding:10px 14px; border-radius:12px; font-weight:700; font-size:.82rem; margin-bottom:14px; line-height:1.5; }
-.tile-banner.b-H{ background:var(--q-soft); color:#8fd4ff; }
-.tile-banner.b-T{ background:var(--t-soft); color:#ffb0b8; }
-.tile-banner.b-C{ background:var(--c-soft); color:#9cf0c4; }
-
+.tile-banner.b-H{ background:var(--q-soft); color:var(--banner-H); }
+.tile-banner.b-T{ background:var(--t-soft); color:var(--banner-T); }
+.tile-banner.b-C{ background:var(--c-soft); color:var(--banner-C); }
+ 
 .timer-wrap{ margin-bottom:16px; }
 .timer-bar-track{ height:8px; border-radius:6px; background:var(--panel-soft); overflow:hidden; }
 .timer-bar-fill{ height:100%; background:var(--brand); border-radius:6px; transition: width .2s linear, background .3s ease; }
 .timer-num{ font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); margin-top:4px; text-align:right; }
-
+ 
 #modal-question-text{ font-size:1.14rem; line-height:1.5; font-weight:700; margin-bottom:20px; }
 #modal-options{ display:flex; flex-direction:column; gap:10px; }
 .option-btn{ display:flex; align-items:center; gap:12px; text-align:left; width:100%; padding:13px 16px; border-radius:14px; border:2px solid var(--line); background:var(--panel-soft); font-size:.95rem; font-weight:600; color:var(--ink); transition:background .15s ease,border-color .15s ease; }
@@ -207,20 +271,20 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 .option-btn.wrong{ background:var(--t-soft); border-color:var(--t-color); }
 .option-btn.wrong .letter{ background:var(--t-color); color:#330b10; }
 .option-btn:disabled{ cursor:default; }
-
+ 
 #modal-feedback{ margin-top:18px; }
 #modal-feedback p{ line-height:1.55; margin:0 0 14px; font-size:.94rem; }
-#modal-feedback p.result-ok{ color:#54e29c; font-weight:700; }
-#modal-feedback p.result-bad{ color:#ff8891; font-weight:700; }
+#modal-feedback p.result-ok{ color:var(--ok-ink); font-weight:700; }
+#modal-feedback p.result-bad{ color:var(--bad-ink); font-weight:700; }
 #modal-feedback p.explain{ color:var(--ink-soft); font-weight:400; }
 #btn-continue{ width:100%; padding:13px; }
-
+ 
 /* --- Lucky card modal --- */
 .lucky-instruction{ text-align:center; color:var(--ink-soft); font-size:.9rem; margin:4px 0 2px; }
 .card-draw-stage{ display:flex; flex-direction:column; align-items:center; padding:10px 0 4px; }
 .lucky-card-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; width:100%; margin:6px 0 4px; }
 .lucky-card-mini{
-  aspect-ratio:3/4; border-radius:12px; background:linear-gradient(160deg,#3d3110,var(--v-color));
+  aspect-ratio:3/4; border-radius:12px; background:linear-gradient(160deg,var(--lucky-from),var(--v-color));
   border:2px solid #F4B93E; display:flex; align-items:center; justify-content:center;
   font-size:1.6rem; box-shadow:0 8px 18px rgba(0,0,0,.4); cursor:pointer;
   transform:rotateY(180deg) scale(1); transition:transform .45s cubic-bezier(.4,0,.2,1), opacity .25s ease;
@@ -229,10 +293,10 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 .lucky-card-mini.flipped{ transform:rotateY(0deg) scale(1.08); cursor:default; }
 .lucky-card-mini.disabled:not(.flipped){ opacity:.35; cursor:default; pointer-events:none; }
 .lucky-card-mini .lucky-card-back{ font-size:1.5rem; }
-#lucky-card-result-text{ margin-top:18px; font-size:1.1rem; font-weight:800; text-align:center; color:#ffe3a1; }
+#lucky-card-result-text{ margin-top:18px; font-size:1.1rem; font-weight:800; text-align:center; color:var(--lucky-ink); }
 #lucky-card-detail{ margin-top:6px; font-size:.88rem; color:var(--ink-soft); text-align:center; }
 #btn-lucky-continue{ margin-top:20px; width:100%; padding:13px; }
-
+ 
 /* --- Win modal --- */
 .win-card{ text-align:center; position:relative; overflow:hidden; }
 .trophy{ font-size:3.2rem; margin-bottom:6px; }
@@ -242,7 +306,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 #confetti-container{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
 .confetti-piece{ position:absolute; top:-12px; width:9px; height:14px; opacity:.9; border-radius:2px; animation:rot-fall linear forwards; }
 @keyframes rot-fall{ to{ transform:translateY(115vh) rotate(540deg); opacity:.6; } }
-
+ 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -257,25 +321,26 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
 </style>
 </head>
 <body>
-
+ 
 <!-- ================================================================
      MÀN HÌNH 1: THIẾT LẬP TRÒ CHƠI
      ================================================================ -->
 <div id="screen-setup">
   <div class="setup-card card">
+    <div class="setup-theme-row"><button class="theme-toggle" type="button" aria-label="Đổi giao diện sáng/tối"><span class="ico">🌙</span><span class="txt">Chế độ tối</span></button></div>
     <h1>Vòng Quay Biến Số 🐍🎲</h1>
     <p class="lead">Mỗi lượt, đội quay xúc xắc 3D và di chuyển quân cờ từng ô. Bàn cờ 24 ô gồm Ô Câu Hỏi, Ô Thử Thách, Ô Cơ Hội, Ô Vận May — và 3 ô "cổng dịch chuyển" bí ẩn. Về đích tại Ô 24 đầu tiên để chiến thắng!</p>
-
+ 
     <div class="setup-section">
       <label class="section-title">Số đội tham gia</label>
       <div class="count-choices" id="count-choices"></div>
     </div>
-
+ 
     <div class="setup-section">
       <label class="section-title">Tên các đội</label>
       <div id="team-inputs"></div>
     </div>
-
+ 
     <div class="setup-section">
       <label class="section-title">Chú giải các loại ô</label>
       <div class="legend-row">
@@ -286,11 +351,11 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
         <span class="legend-item"><span class="legend-swatch" style="background:#D56BFF"></span>Cổng dịch chuyển — tự động nhảy ô, viền đứt nét tím</span>
       </div>
     </div>
-
+ 
     <button class="btn btn-primary" id="btn-start">Bắt đầu chơi 🚀</button>
   </div>
 </div>
-
+ 
 <!-- ================================================================
      MÀN HÌNH 2: TRÒ CHƠI
      ================================================================ -->
@@ -299,9 +364,12 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
     <div class="brandmark">
       <h1>Vòng Quay Biến Số</h1>
     </div>
-    <button class="btn btn-ghost" id="btn-reset">↺ Chơi lại từ đầu</button>
+    <div class="topbar-actions">
+      <button class="theme-toggle" type="button" aria-label="Đổi giao diện sáng/tối"><span class="ico">🌙</span><span class="txt">Chế độ tối</span></button>
+      <button class="btn btn-ghost" id="btn-reset">↺ Chơi lại từ đầu</button>
+    </div>
   </div>
-
+ 
   <div class="game-layout">
     <section class="board-wrap card">
       <div class="start-zone">
@@ -313,7 +381,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
         <div id="pawn-layer"></div>
       </div>
     </section>
-
+ 
     <aside class="sidebar">
       <div class="turn-panel card">
         <div class="kicker">Lượt chơi hiện tại</div>
@@ -321,7 +389,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
         <button class="btn btn-primary" id="btn-ask">🎲 Quay xúc xắc</button>
         <div id="last-roll"></div>
       </div>
-
+ 
       <div class="scoreboard card">
         <h2>Bảng điểm</h2>
         <div id="score-list"></div>
@@ -329,7 +397,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
     </aside>
   </div>
 </div>
-
+ 
 <!-- ================================================================
      OVERLAY: XÚC XẮC
      ================================================================ -->
@@ -341,7 +409,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
     <div id="dice-result-label"></div>
   </div>
 </div>
-
+ 
 <!-- ================================================================
      MODAL: CÂU HỎI
      ================================================================ -->
@@ -365,7 +433,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
     </div>
   </div>
 </div>
-
+ 
 <!-- ================================================================
      MODAL: THẺ VẬN MAY
      ================================================================ -->
@@ -384,7 +452,7 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
     <button class="btn btn-primary hidden" id="btn-lucky-continue">Tiếp tục</button>
   </div>
 </div>
-
+ 
 <!-- ================================================================
      MODAL: CHIẾN THẮNG
      ================================================================ -->
@@ -397,25 +465,25 @@ button:focus-visible, input:focus-visible{ outline:3px solid var(--brand); outli
     <button class="btn btn-primary" id="btn-play-again">Chơi lại từ đầu</button>
   </div>
 </div>
-
-
+ 
+ 
 <script>
 /* ================================================================
    PHẦN 1 — CẤU HÌNH BÀN CỜ: THẦY/CÔ CHỈNH SỬA NỘI DUNG TẠI ĐÂY
    ================================================================ */
-
+ 
 // Tổng số ô trên bàn cờ. Ô cuối cùng (TONG_SO_O) là ô đích.
 const TONG_SO_O = 24;
-
+ 
 // Số ô mỗi hàng khi vẽ bàn cờ dạng rắn lượn (24 ô = 4 hàng x 6 ô).
 const SO_O_MOI_HANG = 6;
-
+ 
 // Số mặt của xúc xắc (mặc định 6 => giá trị ngẫu nhiên 1-6 mỗi lượt).
 const SO_MAT_XUC_XAC = 6;
-
+ 
 // Thời gian trả lời mỗi câu hỏi (giây). Hết giờ mà chưa chọn = coi như SAI.
 const THOI_GIAN_TRA_LOI = 10;
-
+ 
 // ---------------------------------------------------------------
 // LOẠI Ô — mỗi ô trong 24 ô mang 1 trong 4 loại:
 //   'H' = Câu hỏi   (12 ô) — đúng: tiến 1 ô   | sai: đứng im
@@ -428,7 +496,7 @@ const LOAI_O = {
   11:'T', 12:'H', 13:'V', 14:'H', 15:'C', 16:'H', 17:'T', 18:'H', 19:'V', 20:'H',
   21:'C', 22:'T', 23:'V', 24:'V',
 };
-
+ 
 // ---------------------------------------------------------------
 // Ô CỔNG DỊCH CHUYỂN (teleport) — khi quân cờ DỪNG đúng tại ô nguồn,
 // nó sẽ tự động nhảy luôn tới ô đích, KHÔNG hiện câu hỏi ở ô nguồn.
@@ -439,12 +507,12 @@ const O_DICH_CHUYEN = {
   7: 14,   // Ô 7  -> nhảy tiến lên Ô 14
   16: 20,  // Ô 16 -> nhảy tiến lên Ô 20
 };
-
+ 
 // Số ô tiến/lùi theo từng loại ô (xem giải thích ở LOAI_O).
 const TIEN_O_CAU_HOI = 1;   // Ô H, trả lời đúng
 const TIEN_O_CO_HOI  = 2;   // Ô C, trả lời đúng
 const LUI_O_THU_THACH = 1;  // Ô T, trả lời sai
-
+ 
 // ---------------------------------------------------------------
 // THẺ VẬN MAY — bốc ngẫu nhiên 1 trong 8 thẻ khi dừng ở ô 'V'.
 //   loai: 'tien' | 'lui' | 'dungim' | 'doicho'
@@ -460,7 +528,7 @@ const THE_VAN_MAY = [
   { nhan: 'Lùi 1 ô',                  bieuTuong:'🐌', loai:'lui',    soBuoc:1 },
   { nhan: 'Hoán đổi vị trí với 1 đội ngẫu nhiên', bieuTuong:'🔄', loai:'doicho', soBuoc:0 },
 ];
-
+ 
 // Danh sách màu + tên mặc định cho tối đa 4 đội chơi.
 const DOI_MAC_DINH = [
   { ten:'Đội Đỏ',         mau:'#FF5F6D' },
@@ -468,7 +536,7 @@ const DOI_MAC_DINH = [
   { ten:'Đội Xanh Lá',    mau:'#39D98A' },
   { ten:'Đội Vàng Cam',   mau:'#FFC93C' },
 ];
-
+ 
 /* ================================================================
    PHẦN 2 — NGÂN HÀNG CÂU HỎI (40 câu, đơn giản, dễ hiểu — Python nhập môn)
    Chỉ xoay quanh đúng 4 chủ đề: (1) gán giá trị đơn giản, (2) gán biểu thức,
@@ -498,7 +566,7 @@ const NGAN_HANG_CAU_HOI = [
     giaiThich:'Vì 5 được đặt trong dấu nháy kép, Python hiểu đây là một chuỗi ký tự, không phải số.' },
   { cauHoi:'Cho x = 5. Sau đó gán lại x = "5" (dạng chuỗi). Điều gì xảy ra với x?', luaChon:['x vẫn là số 5 như cũ','x bây giờ là chuỗi "5"','Python báo lỗi vì đổi kiểu dữ liệu','x bị xóa khỏi chương trình'], dapAn:1,
     giaiThich:'Khi gán lại, x nhận giá trị mới là chuỗi "5", thay thế hoàn toàn cho giá trị số cũ.' },
-
+ 
   // --- Chủ đề 2: Gán biểu thức (10 câu) ---
   { cauHoi:'Cho a = 5 + 3. Giá trị của a là bao nhiêu?', luaChon:['5','3','8','53'], dapAn:2,
     giaiThich:'Python tính biểu thức 5 + 3 trước (bằng 8), rồi mới gán kết quả đó cho a.' },
@@ -520,7 +588,7 @@ const NGAN_HANG_CAU_HOI = [
     giaiThich:'Tính y * 2 trước = 6, sau đó x + 6 = 2 + 6 = 8.' },
   { cauHoi:'Cho x = 7. Sau lệnh y = x // 2 (chia lấy phần nguyên), giá trị của y là bao nhiêu?', luaChon:['3','3.5','4','7'], dapAn:0,
     giaiThich:'7 chia 2 được 3 dư 1; phép chia lấy phần nguyên (//) chỉ giữ lại phần nguyên là 3.' },
-
+ 
   // --- Chủ đề 3: Nguyên tắc đặt tên biến (10 câu) ---
   { cauHoi:'Tên biến nào sau đây hợp lệ trong Python?', luaChon:['2bien','bien so','bien_so','bien-so'], dapAn:2,
     giaiThich:'bien_so hợp lệ vì chỉ chứa chữ cái và dấu gạch dưới, không bắt đầu bằng số, không chứa khoảng trắng hay dấu gạch ngang.' },
@@ -542,7 +610,7 @@ const NGAN_HANG_CAU_HOI = [
     giaiThich:'Python luôn phân biệt chữ hoa và chữ thường (case-sensitive) trong tên biến.' },
   { cauHoi:'Hai biến Diem và diem trong Python có phải là một biến duy nhất không?', luaChon:['Có, là một biến duy nhất','Không, là hai biến hoàn toàn khác nhau','Chỉ là một nếu chúng có cùng giá trị','Gây lỗi cú pháp ngay lập tức'], dapAn:1,
     giaiThich:'Vì Python phân biệt chữ hoa/thường, Diem và diem được xem là hai biến độc lập, không liên quan tới nhau.' },
-
+ 
   // --- Chủ đề 4: Từ khóa đặc biệt không được dùng làm tên biến (10 câu) ---
   { cauHoi:'Từ nào sau đây KHÔNG thể dùng làm tên biến vì là từ khóa của Python?', luaChon:['number','value','if','result'], dapAn:2,
     giaiThich:'if là từ khóa dùng để viết câu lệnh điều kiện, Python không cho phép dùng nó làm tên biến.' },
@@ -565,7 +633,7 @@ const NGAN_HANG_CAU_HOI = [
   { cauHoi:'Vì sao không nên đặt tên biến trùng với một từ khóa (keyword) như if, for, class?', luaChon:['Vì sẽ làm chương trình chạy chậm hơn','Vì Python sẽ báo lỗi cú pháp, không cho phép dùng từ khóa làm tên biến','Vì chỉ các máy tính đời cũ mới gặp lỗi này','Vì chương trình sẽ tự động đổi sang tên biến khác'], dapAn:1,
     giaiThich:'Từ khóa (keyword) đã được Python dùng riêng cho cú pháp ngôn ngữ, nên nếu dùng làm tên biến sẽ gây ra lỗi cú pháp (SyntaxError).' },
 ];
-
+ 
 /* ================================================================
    PHẦN 3 — TRẠNG THÁI TRÒ CHƠI
    ================================================================ */
@@ -582,7 +650,7 @@ const trangThai = {
   timerId: null,
   timerConLai: THOI_GIAN_TRA_LOI,
 };
-
+ 
 /* ================================================================
    PHẦN 4 — ÂM THANH (Web Audio API — tự tổng hợp, không cần file mp3)
    ================================================================ */
@@ -594,7 +662,7 @@ function layAudioCtx(){
   if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
-
+ 
 // Phát một nốt đơn giản (oscillator + envelope âm lượng để tránh tiếng "tách").
 function phatNot(tanSo, batDauSau, thoiGian, loaiSong = 'sine', amLuong = 0.18){
   try{
@@ -613,7 +681,7 @@ function phatNot(tanSo, batDauSau, thoiGian, loaiSong = 'sine', amLuong = 0.18){
     osc.stop(tBatDau + thoiGian + 0.02);
   } catch(e){ /* im lặng bỏ qua nếu môi trường không hỗ trợ Web Audio */ }
 }
-
+ 
 function sfxXucXacTick(){ phatNot(520 + Math.random()*180, 0, 0.06, 'square', 0.1); }
 function sfxBuocNhay(){ phatNot(700, 0, 0.07, 'triangle', 0.14); }
 function sfxDungYen(){ phatNot(260, 0, 0.1, 'sine', 0.12); }
@@ -622,14 +690,14 @@ function sfxSai(){ phatNot(220, 0, 0.14, 'sawtooth', 0.16); phatNot(150, 0.12, 0
 function sfxBocThe(){ phatNot(600,0,0.08,'triangle',0.14); phatNot(760,0.08,0.08,'triangle',0.14); phatNot(950,0.16,0.12,'triangle',0.14); }
 function sfxChienThang(){ [523.25,659.25,784,1046.5].forEach((f,i)=>phatNot(f, i*0.14, 0.26, 'sine', 0.2)); }
 function sfxTeleport(){ for (let i=0;i<6;i++) phatNot(300 + i*120, i*0.045, 0.06, 'sine', 0.1); }
-
+ 
 /* ================================================================
    PHẦN 5 — MÀN HÌNH THIẾT LẬP
    ================================================================ */
 const elCountChoices = document.getElementById('count-choices');
 const elTeamInputs   = document.getElementById('team-inputs');
 let soDoiDangChon = 2;
-
+ 
 [2, 3, 4].forEach(soDoi => {
   const btn = document.createElement('button');
   btn.className = 'btn-count' + (soDoi === soDoiDangChon ? ' active' : '');
@@ -642,7 +710,7 @@ let soDoiDangChon = 2;
   });
   elCountChoices.appendChild(btn);
 });
-
+ 
 function renderTeamInputs(soDoi){
   elTeamInputs.innerHTML = '';
   for (let i = 0; i < soDoi; i++){
@@ -657,26 +725,26 @@ function renderTeamInputs(soDoi){
   }
 }
 renderTeamInputs(soDoiDangChon);
-
+ 
 document.getElementById('btn-start').addEventListener('click', () => {
   layAudioCtx(); // khởi tạo AudioContext ngay từ cử chỉ bấm nút đầu tiên của người dùng
-
+ 
   const doiMoi = [];
   for (let i = 0; i < soDoiDangChon; i++){
     const input = document.getElementById('team-name-' + i);
     const tenNhap = input.value.trim();
     doiMoi.push({ id:i, ten: tenNhap || DOI_MAC_DINH[i].ten, mau: DOI_MAC_DINH[i].mau, viTri: 0 });
   }
-
+ 
   trangThai.doiChoi = doiMoi;
   trangThai.luotHienTai = 0;
   trangThai.boCauHoiConLai = [];
   trangThai.troChoiKetThuc = false;
   trangThai.dangXuLyLuot = false;
-
+ 
   document.getElementById('screen-setup').classList.add('hidden');
   document.getElementById('screen-game').classList.remove('hidden');
-
+ 
   renderBoard();
   window.addEventListener('resize', xuLyResizeManHinh);
   requestAnimationFrame(() => {
@@ -687,7 +755,7 @@ document.getElementById('btn-start').addEventListener('click', () => {
     capNhatBangLuot();
   });
 });
-
+ 
 /* ================================================================
    PHẦN 6 — VẼ BÀN CỜ (RẮN LƯỢN, MỖI HÀNG 6 Ô x 4 HÀNG = 24 Ô)
    ================================================================ */
@@ -705,20 +773,20 @@ function nhanCuaLoai(loai){
   if (loai === 'V') return 'VẬN';
   return '';
 }
-
+ 
 function taoTile(soThuTu){
   const tile = document.createElement('div');
   const laDich = soThuTu === TONG_SO_O;
   const loai = LOAI_O[soThuTu] || 'H';
   tile.className = 'tile ' + (laDich ? 'finish' : 'loai-' + loai);
   tile.id = 'tile-' + soThuTu;
-
+ 
   const coCong = O_DICH_CHUYEN.hasOwnProperty(soThuTu);
   if (coCong) tile.classList.add('has-warp');
-
+ 
   const bieuTuong = laDich ? '🏁' : bieuTuongCuaLoai(loai);
   const nhan = laDich ? 'ĐÍCH' : nhanCuaLoai(loai);
-
+ 
   tile.innerHTML = `
     <span class="tile-num">${soThuTu}</span>
     <span class="tile-icon">${bieuTuong}</span>
@@ -732,26 +800,26 @@ function taoTile(soThuTu){
   }
   return tile;
 }
-
+ 
 function taoMuiTen(){
   const arrow = document.createElement('span');
   arrow.className = 'flow-arrow';
   arrow.textContent = '➜';
   return arrow;
 }
-
+ 
 function renderBoard(){
   const board = document.getElementById('board');
   board.innerHTML = '';
-
+ 
   const soHang = Math.ceil(TONG_SO_O / SO_O_MOI_HANG);
   let soThuTu = 1;
-
+ 
   for (let hang = 0; hang < soHang; hang++){
     const laHangDaoChieu = hang % 2 === 1;
     const rowEl = document.createElement('div');
     rowEl.className = 'board-row' + (laHangDaoChieu ? ' reverse' : '');
-
+ 
     const soOTrongHangNay = Math.min(SO_O_MOI_HANG, TONG_SO_O - soThuTu + 1);
     for (let j = 0; j < soOTrongHangNay; j++){
       if (j > 0) rowEl.appendChild(taoMuiTen());
@@ -765,13 +833,13 @@ function renderBoard(){
     board.appendChild(rowEl);
   }
 }
-
+ 
 /* ================================================================
    PHẦN 7 — LỚP QUÂN CỜ NỔI (PAWN OVERLAY) & TỌA ĐỘ CÁC Ô
    ================================================================ */
 let toaDoO = {}; // { [soThuTu]: {x, y} } — tâm của từng ô, tính theo tọa độ tương đối #board-outer
 let toaDoXuatPhat = { x: 0, y: 0 };
-
+ 
 function timToaDoOTrenBan(){
   const boardOuter = document.getElementById('board-outer');
   const rectOuter = boardOuter.getBoundingClientRect();
@@ -794,10 +862,10 @@ function timToaDoOTrenBan(){
     y: rStart.top - rectOuter.top + 10,
   };
 }
-
+ 
 // Độ lệch nhỏ để nhiều quân cờ trên cùng 1 ô không chồng khít lên nhau.
 const LECH_QUAN_CO = [ {dx:0,dy:0}, {dx:13,dy:-10}, {dx:-13,dy:10}, {dx:13,dy:10} ];
-
+ 
 function taoPawnEl(doi){
   const pawn = document.createElement('div');
   pawn.className = 'pawn';
@@ -807,19 +875,19 @@ function taoPawnEl(doi){
   pawn.textContent = doi.ten.trim().charAt(0).toUpperCase();
   return pawn;
 }
-
+ 
 function renderPawnsBanDau(){
   const layer = document.getElementById('pawn-layer');
   layer.innerHTML = '';
   document.getElementById('start-tokens').innerHTML = '';
-
+ 
   trangThai.doiChoi.forEach((doi, idx) => {
     const pawn = taoPawnEl(doi);
     layer.appendChild(pawn);
     const lech = LECH_QUAN_CO[idx % LECH_QUAN_CO.length];
     pawn.style.left = (toaDoXuatPhat.x + lech.dx) + 'px';
     pawn.style.top  = (toaDoXuatPhat.y + lech.dy) + 'px';
-
+ 
     // Thêm một chấm tròn nhỏ cố định trong khu "Xuất phát" để minh họa (không di chuyển).
     const dotTinh = document.createElement('div');
     dotTinh.style.width = '18px'; dotTinh.style.height = '18px'; dotTinh.style.borderRadius = '50%';
@@ -828,7 +896,7 @@ function renderPawnsBanDau(){
     document.getElementById('start-tokens').appendChild(dotTinh);
   });
 }
-
+ 
 function dichChuyenPawnDenO(idDoi, soThuTuO, { lech = {dx:0,dy:0} } = {}){
   const pawn = document.getElementById('pawn-' + idDoi);
   const toaDo = toaDoO[soThuTuO];
@@ -838,11 +906,11 @@ function dichChuyenPawnDenO(idDoi, soThuTuO, { lech = {dx:0,dy:0} } = {}){
   pawn.style.top  = (toaDo.y + lech.dy) + 'px';
   setTimeout(() => pawn.classList.remove('hop-bounce'), 150);
 }
-
+ 
 function lechChoDoi(idDoi){
   return LECH_QUAN_CO[idDoi % LECH_QUAN_CO.length];
 }
-
+ 
 /* ================================================================
    PHẦN 7B — TỰ ĐỘNG CO GIÃN KÍCH THƯỚC Ô BÀN CỜ (FIT TO SCREEN)
    ================================================================ */
@@ -853,7 +921,7 @@ function lechChoDoi(idDoi){
 const TY_LE_MUI_TEN = 0.26;
 const TY_LE_KHOANG_CACH_NGANG = 0.16;
 const TY_LE_KHOANG_CACH_DOC = 0.34;
-
+ 
 function capNhatKichThuocBanCo(){
   const outer = document.getElementById('board-outer');
   if (!outer) return;
@@ -861,28 +929,28 @@ function capNhatKichThuocBanCo(){
   const rectW = rect.width;
   const rectH = rect.height;
   if (rectW <= 0 || rectH <= 0) return;
-
+ 
   const soCot = SO_O_MOI_HANG;
   const soHang = Math.ceil(TONG_SO_O / SO_O_MOI_HANG);
   // Mỗi hàng có soCot ô + (soCot - 1) mũi tên, khoảng cách (gap) nằm giữa MỌI phần tử liền kề
   // => tổng số "khoảng gap" trong 1 hàng = (soCot*2 - 1) - 1 = soCot*2 - 2
   const soPhanTuMoiHang = soCot * 2 - 1; // ô + mũi tên xen kẽ
   const soKhoangGapNgang = soPhanTuMoiHang - 1;
-
+ 
   // Chiều ngang: soCot ô + (soCot-1) mũi tên + các khoảng gap
   const roongTheoNgang = soCot + (soCot - 1) * TY_LE_MUI_TEN + soKhoangGapNgang * TY_LE_KHOANG_CACH_NGANG;
   // Chiều dọc: soHang ô + (soHang-1) khoảng cách giữa các hàng
   const roongTheoDoc = soHang + (soHang - 1) * TY_LE_KHOANG_CACH_DOC;
-
+ 
   const tileTheoNgang = rectW / roongTheoNgang;
   const tileTheoDoc = rectH / roongTheoDoc;
-
+ 
   let kichThuocMoi = Math.floor(Math.min(tileTheoNgang, tileTheoDoc) * 0.92);
   kichThuocMoi = Math.max(28, kichThuocMoi);
-
+ 
   document.documentElement.style.setProperty('--tile-size', kichThuocMoi + 'px');
 }
-
+ 
 function datLaiViTriPawnNgay(idDoi, soThuTuO, lech = { dx:0, dy:0 }){
   const pawn = document.getElementById('pawn-' + idDoi);
   if (!pawn) return;
@@ -896,14 +964,14 @@ function datLaiViTriPawnNgay(idDoi, soThuTuO, lech = { dx:0, dy:0 }){
   void pawn.offsetWidth;
   pawn.style.transition = transitionCu;
 }
-
+ 
 function dinhViLaiTatCaPawn(){
   trangThai.doiChoi.forEach((doi) => {
     const lech = lechChoDoi(doi.id);
     datLaiViTriPawnNgay(doi.id, doi.viTri, lech);
   });
 }
-
+ 
 let hienDangChoResize = null;
 function xuLyResizeManHinh(){
   clearTimeout(hienDangChoResize);
@@ -913,7 +981,7 @@ function xuLyResizeManHinh(){
     dinhViLaiTatCaPawn();
   }, 80);
 }
-
+ 
 /* ================================================================
    PHẦN 8 — BẢNG ĐIỂM & LƯỢT CHƠI
    ================================================================ */
@@ -932,7 +1000,7 @@ function renderScoreboard(){
     list.appendChild(card);
   });
 }
-
+ 
 function capNhatBangLuot(){
   const doi = trangThai.doiChoi[trangThai.luotHienTai];
   const elTen = document.getElementById('turn-team-name');
@@ -940,31 +1008,54 @@ function capNhatBangLuot(){
   elTen.style.color = doi.mau;
   document.getElementById('btn-ask').disabled = trangThai.troChoiKetThuc || trangThai.dangXuLyLuot;
 }
-
+ 
 /* ================================================================
    PHẦN 9 — QUAY XÚC XẮC (HIỆU ỨNG 3D + ÂM THANH) & DI CHUYỂN TỪNG Ô
    ================================================================ */
 const MAT_XUC_XAC = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
-
+ 
 document.getElementById('btn-ask').addEventListener('click', batDauLuotChoi);
 document.getElementById('btn-continue').addEventListener('click', dongModalCauHoiVaApDungKetQua);
 document.getElementById('btn-lucky-continue').addEventListener('click', dongModalVanMayVaApDungKetQua);
 document.getElementById('btn-reset').addEventListener('click', choiLaiTuDau);
+ 
+/* ================================================================
+   ĐỔI GIAO DIỆN SÁNG / TỐI
+   ================================================================ */
+function capNhatNutGiaoDien(){
+  const dangSang = document.documentElement.getAttribute('data-theme') === 'light';
+  document.querySelectorAll('.theme-toggle').forEach(nut => {
+    nut.querySelector('.ico').textContent = dangSang ? '☀️' : '🌙';
+    nut.querySelector('.txt').textContent = dangSang ? 'Chế độ sáng' : 'Chế độ tối';
+  });
+}
+function datGiaoDien(che){
+  document.documentElement.setAttribute('data-theme', che);
+  try { localStorage.setItem('vqbs-theme', che); } catch(e){}
+  capNhatNutGiaoDien();
+}
+document.querySelectorAll('.theme-toggle').forEach(nut => {
+  nut.addEventListener('click', () => {
+    const dangSang = document.documentElement.getAttribute('data-theme') === 'light';
+    datGiaoDien(dangSang ? 'dark' : 'light');
+  });
+});
+capNhatNutGiaoDien();
 document.getElementById('btn-play-again').addEventListener('click', choiLaiTuDau);
-
+ 
 function batDauLuotChoi(){
   if (trangThai.dangXuLyLuot || trangThai.troChoiKetThuc) return;
   trangThai.dangXuLyLuot = true;
   document.getElementById('btn-ask').disabled = true;
   document.getElementById('last-roll').textContent = '';
-
+ 
   const overlay = document.getElementById('dice-overlay');
   const cube = document.getElementById('dice-cube');
   const resultLabel = document.getElementById('dice-result-label');
   cube.classList.remove('settled');
   resultLabel.textContent = '';
   overlay.classList.remove('hidden');
-
+ 
   let soLanQuay = 0;
   const tongSoLan = 11;
   const timer = setInterval(() => {
@@ -986,12 +1077,12 @@ function batDauLuotChoi(){
     }
   }, 100);
 }
-
+ 
 // Di chuyển quân cờ của đội hiện tại từng ô một (hopping) rồi xử lý ô dừng lại.
 function diChuyenTungO(soBuoc){
   const doi = trangThai.doiChoi[trangThai.luotHienTai];
   let buocConLai = soBuoc;
-
+ 
   function buocTiep(){
     if (buocConLai <= 0){
       xuLyOSauKhiDiChuyen(doi);
@@ -1010,7 +1101,7 @@ function diChuyenTungO(soBuoc){
   }
   buocTiep();
 }
-
+ 
 // Quân cờ "nhảy cổng dịch chuyển" tới ô đích (một bước nhảy có hiệu ứng + âm thanh riêng).
 function nhayQuaCongDichChuyen(doi, oDich, callback){
   setTimeout(() => {
@@ -1021,13 +1112,13 @@ function nhayQuaCongDichChuyen(doi, oDich, callback){
     setTimeout(callback, 320);
   }, 150);
 }
-
+ 
 function xuLyOSauKhiDiChuyen(doi){
   if (doi.viTri >= TONG_SO_O){
     ketThucVoiChienThang(doi);
     return;
   }
-
+ 
   // 1) Kiểm tra cổng dịch chuyển trước — nếu có, tự động nhảy và KHÔNG hỏi câu hỏi ở ô nguồn.
   if (O_DICH_CHUYEN.hasOwnProperty(doi.viTri)){
     const oDich = O_DICH_CHUYEN[doi.viTri];
@@ -1037,10 +1128,10 @@ function xuLyOSauKhiDiChuyen(doi){
     });
     return;
   }
-
+ 
   ketThucLuotHoacXuLyO(doi);
 }
-
+ 
 function ketThucLuotHoacXuLyO(doi){
   const loai = LOAI_O[doi.viTri] || 'H';
   if (loai === 'V'){
@@ -1049,14 +1140,14 @@ function ketThucLuotHoacXuLyO(doi){
     moModalCauHoi(doi, loai);
   }
 }
-
+ 
 function chuyenLuotTiepTheo(){
   trangThai.luotHienTai = (trangThai.luotHienTai + 1) % trangThai.doiChoi.length;
   trangThai.dangXuLyLuot = false;
   renderScoreboard();
   capNhatBangLuot();
 }
-
+ 
 /* ================================================================
    PHẦN 10 — NGÂN HÀNG CÂU HỎI: RÚT NGẪU NHIÊN KHÔNG LẶP LẠI,
    TỰ ĐỘNG XÁO TRỘN LẠI KHI DÙNG HẾT 40 CÂU.
@@ -1069,7 +1160,7 @@ function xaoTron(mang){
   }
   return m;
 }
-
+ 
 function chonCauHoiNgauNhien(){
   if (trangThai.boCauHoiConLai.length === 0){
     trangThai.boCauHoiConLai = xaoTron(NGAN_HANG_CAU_HOI.map((_, i) => i));
@@ -1077,7 +1168,7 @@ function chonCauHoiNgauNhien(){
   const chiSoCauHoi = trangThai.boCauHoiConLai.shift();
   return NGAN_HANG_CAU_HOI[chiSoCauHoi];
 }
-
+ 
 /* ================================================================
    PHẦN 11 — MODAL CÂU HỎI (Ô H / T / C) + ĐỒNG HỒ ĐẾM NGƯỢC 8 GIÂY
    ================================================================ */
@@ -1092,15 +1183,15 @@ const elFeedbackResult  = document.getElementById('feedback-result');
 const elFeedbackExplain = document.getElementById('feedback-explain');
 const elTimerFill       = document.getElementById('timer-bar-fill');
 const elTimerNum        = document.getElementById('timer-num');
-
+ 
 function moModalCauHoi(doi, loai){
   trangThai.loaiOHienTai = loai;
   trangThai.daTraLoi = false;
   trangThai.cauHoiHienTai = chonCauHoiNgauNhien();
-
+ 
   elModalTeamDot.style.background = doi.mau;
   elModalTeamName.textContent = `${doi.ten} — Ô ${doi.viTri}`;
-
+ 
   if (loai === 'H'){
     elTileBanner.className = 'tile-banner b-H';
     elTileBanner.textContent = `❓ Ô CÂU HỎI — Đúng tiến thêm ${TIEN_O_CAU_HOI} ô, sai đứng im tại chỗ.`;
@@ -1111,9 +1202,9 @@ function moModalCauHoi(doi, loai){
     elTileBanner.className = 'tile-banner b-T';
     elTileBanner.textContent = `! Ô THỬ THÁCH — Đúng đứng im an toàn, sai sẽ lùi lại ${LUI_O_THU_THACH} ô.`;
   }
-
+ 
   elQuestionText.textContent = trangThai.cauHoiHienTai.cauHoi;
-
+ 
   elOptions.innerHTML = '';
   const chuCai = ['A', 'B', 'C', 'D'];
   trangThai.cauHoiHienTai.luaChon.forEach((noiDung, idx) => {
@@ -1123,12 +1214,12 @@ function moModalCauHoi(doi, loai){
     btn.addEventListener('click', () => chonDapAn(idx));
     elOptions.appendChild(btn);
   });
-
+ 
   elFeedback.classList.add('hidden');
   modalQuestion.classList.remove('hidden');
   batDauDemNguoc();
 }
-
+ 
 // Cho phép bấm phím số 1-4 để chọn nhanh đáp án A-D khi modal câu hỏi
 // đang mở và đội chơi chưa trả lời (không hiện chú thích số trên nút).
 document.addEventListener('keydown', (e) => {
@@ -1142,7 +1233,7 @@ document.addEventListener('keydown', (e) => {
   e.preventDefault();
   chonDapAn(chiSo);
 });
-
+ 
 function batDauDemNguoc(){
   dungDemNguoc();
   trangThai.timerConLai = THOI_GIAN_TRA_LOI;
@@ -1159,38 +1250,38 @@ function batDauDemNguoc(){
     capNhatThanhDemNguoc();
   }, 100);
 }
-
+ 
 function dungDemNguoc(){
   if (trangThai.timerId){ clearInterval(trangThai.timerId); trangThai.timerId = null; }
 }
-
+ 
 function capNhatThanhDemNguoc(){
   const tyLe = Math.max(0, trangThai.timerConLai / THOI_GIAN_TRA_LOI);
   elTimerFill.style.width = (tyLe * 100) + '%';
   elTimerFill.style.background = tyLe < 0.3 ? 'var(--t-color)' : (tyLe < 0.6 ? 'var(--v-color)' : 'var(--brand)');
   elTimerNum.textContent = Math.ceil(trangThai.timerConLai) + 's';
 }
-
+ 
 function chonDapAn(chiSoDaChon){
   if (trangThai.daTraLoi) return;
   trangThai.daTraLoi = true;
   dungDemNguoc();
-
+ 
   const cauHoi = trangThai.cauHoiHienTai;
   const loai = trangThai.loaiOHienTai;
   const hetGio = chiSoDaChon === -1;
   const dungHaySai = !hetGio && chiSoDaChon === cauHoi.dapAn;
   trangThai.traLoiDung = dungHaySai;
-
+ 
   const tatCaNut = elOptions.querySelectorAll('.option-btn');
   tatCaNut.forEach((nut, idx) => {
     nut.disabled = true;
     if (idx === cauHoi.dapAn) nut.classList.add('correct');
     else if (idx === chiSoDaChon) nut.classList.add('wrong');
   });
-
+ 
   if (dungHaySai) sfxDung(); else sfxSai();
-
+ 
   let ketQuaText = '';
   const tienToHetGio = hetGio ? '⏰ Hết giờ! ' : '';
   if (loai === 'H' && dungHaySai)       ketQuaText = `✅ Chính xác! Đội tiến thêm ${TIEN_O_CAU_HOI} ô.`;
@@ -1199,35 +1290,35 @@ function chonDapAn(chiSoDaChon){
   else if (loai === 'C' && !dungHaySai) ketQuaText = `${tienToHetGio}❌ Chưa đúng. Đội đứng im tại chỗ.`;
   else if (loai === 'T' && dungHaySai)  ketQuaText = '✅ Chính xác! Đội an toàn, không bị lùi.';
   else                                   ketQuaText = `${tienToHetGio}❌ Sai rồi! Đội bị lùi lại ${LUI_O_THU_THACH} ô.`;
-
+ 
   elFeedbackResult.textContent = ketQuaText;
   elFeedbackResult.className = dungHaySai ? 'result-ok' : 'result-bad';
   elFeedbackExplain.textContent = cauHoi.giaiThich || '';
   elFeedback.classList.remove('hidden');
 }
-
+ 
 function dongModalCauHoiVaApDungKetQua(){
   modalQuestion.classList.add('hidden');
   const doi = trangThai.doiChoi[trangThai.luotHienTai];
   const loai = trangThai.loaiOHienTai;
   const dung = trangThai.traLoiDung;
-
+ 
   let diChuyen = 0;
   if (loai === 'H' && dung) diChuyen = TIEN_O_CAU_HOI;
   else if (loai === 'C' && dung) diChuyen = TIEN_O_CO_HOI;
   else if (loai === 'T' && !dung) diChuyen = -LUI_O_THU_THACH;
-
+ 
   if (diChuyen !== 0){
     doi.viTri = Math.max(0, Math.min(doi.viTri + diChuyen, TONG_SO_O));
     dichChuyenPawnDenO(doi.id, Math.max(doi.viTri, 1), { lech: lechChoDoi(doi.id) });
     renderScoreboard();
     if (diChuyen > 0) sfxBuocNhay(); else sfxDungYen();
   }
-
+ 
   if (doi.viTri >= TONG_SO_O){ ketThucVoiChienThang(doi); return; }
   chuyenLuotTiepTheo();
 }
-
+ 
 /* ================================================================
    PHẦN 12 — MODAL THẺ VẬN MAY (Ô V)
    ================================================================ */
@@ -1238,20 +1329,20 @@ const elLuckyGrid     = document.getElementById('lucky-card-grid');
 const elLuckyResult   = document.getElementById('lucky-card-result-text');
 const elLuckyDetail   = document.getElementById('lucky-card-detail');
 const btnLuckyContinue = document.getElementById('btn-lucky-continue');
-
+ 
 let theVanMayDaBoc = null;
 let doiKiaDuocHoanDoi = null; // Đội được chọn trước để hoán đổi (nếu lá bài là 'doicho'), chốt ngay lúc lật thẻ.
-
+ 
 function moModalVanMay(doi){
   elLuckyTeamDot.style.background = doi.mau;
   elLuckyTeamName.textContent = `${doi.ten} — Ô Vận May (Ô ${doi.viTri})`;
-
+ 
   elLuckyResult.textContent = '';
   elLuckyDetail.textContent = '';
   btnLuckyContinue.classList.add('hidden');
   theVanMayDaBoc = null;
   doiKiaDuocHoanDoi = null;
-
+ 
   // Hiện đủ 8 lá bài (úp mặt) để đội tự chọn 1 lá — thứ tự hiển thị được xáo trộn mỗi lần mở.
   elLuckyGrid.innerHTML = '';
   const thuTuHienThi = xaoTron([...THE_VAN_MAY]);
@@ -1262,20 +1353,20 @@ function moModalVanMay(doi){
     cardEl.addEventListener('click', () => chonTheVanMay(doi, the, cardEl), { once:true });
     elLuckyGrid.appendChild(cardEl);
   });
-
+ 
   modalLucky.classList.remove('hidden');
 }
-
+ 
 function chonTheVanMay(doi, the, cardEl){
   // Khóa toàn bộ các lá còn lại — chỉ được chọn đúng 1 lá mỗi lượt.
   elLuckyGrid.querySelectorAll('.lucky-card-mini').forEach(el => el.classList.add('disabled'));
-
+ 
   theVanMayDaBoc = the;
   sfxBocThe();
   cardEl.classList.add('flipped');
   cardEl.innerHTML = `<span>${the.bieuTuong}</span>`;
   elLuckyResult.textContent = the.nhan;
-
+ 
   if (the.loai === 'doicho'){
     const ungVienKhacDoi = trangThai.doiChoi.filter(d => d.id !== doi.id);
     doiKiaDuocHoanDoi = ungVienKhacDoi.length > 0
@@ -1287,16 +1378,16 @@ function chonTheVanMay(doi, the, cardEl){
   } else {
     elLuckyDetail.textContent = 'Hiệu ứng sẽ được áp dụng ngay sau khi đóng thẻ bài này.';
   }
-
+ 
   btnLuckyContinue.classList.remove('hidden');
 }
-
+ 
 function dongModalVanMayVaApDungKetQua(){
   modalLucky.classList.add('hidden');
   const doi = trangThai.doiChoi[trangThai.luotHienTai];
   const the = theVanMayDaBoc;
   if (!the){ chuyenLuotTiepTheo(); return; }
-
+ 
   if (the.loai === 'tien' || the.loai === 'lui'){
     const dauDiChuyen = the.loai === 'tien' ? 1 : -1;
     doi.viTri = Math.max(0, Math.min(doi.viTri + dauDiChuyen * the.soBuoc, TONG_SO_O));
@@ -1317,37 +1408,37 @@ function dongModalVanMayVaApDungKetQua(){
   } else {
     sfxDungYen();
   }
-
+ 
   if (doi.viTri >= TONG_SO_O){ ketThucVoiChienThang(doi); return; }
   // Lưu ý: nếu "Hoán đổi vị trí" đưa MỘT đội khác lên đúng ô 24 thì đội đó cũng thắng ngay.
   const doiKhacVuaThang = trangThai.doiChoi.find(d => d.viTri >= TONG_SO_O);
   if (doiKhacVuaThang){ ketThucVoiChienThang(doiKhacVuaThang); return; }
-
+ 
   chuyenLuotTiepTheo();
 }
-
+ 
 /* ================================================================
    PHẦN 13 — CHIẾN THẮNG & HIỆU ỨNG ĂN MỪNG
    ================================================================ */
 const modalWin = document.getElementById('modal-win');
-
+ 
 function ketThucVoiChienThang(doi){
   trangThai.troChoiKetThuc = true;
   trangThai.dangXuLyLuot = false;
   capNhatBangLuot();
-
+ 
   document.getElementById('win-team-name').textContent = `${doi.ten} chiến thắng!`;
   document.getElementById('win-team-name').style.color = doi.mau;
   sfxChienThang();
   taoPhaoHoa();
   modalWin.classList.remove('hidden');
 }
-
+ 
 function taoPhaoHoa(){
   const container = document.getElementById('confetti-container');
   container.innerHTML = '';
   const mauSac = trangThai.doiChoi.map(d => d.mau).concat(['#FFC93C', '#7C6CFF', '#39D98A']);
-
+ 
   for (let i = 0; i < 70; i++){
     const piece = document.createElement('div');
     piece.className = 'confetti-piece';
@@ -1358,7 +1449,7 @@ function taoPhaoHoa(){
     container.appendChild(piece);
   }
 }
-
+ 
 /* ================================================================
    PHẦN 14 — CHƠI LẠI TỪ ĐẦU
    ================================================================ */
@@ -1374,3 +1465,4 @@ function choiLaiTuDau(){
 </script>
 </body>
 </html>
+ 
